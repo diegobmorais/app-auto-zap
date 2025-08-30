@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from 'axios';
+import api from '@/services/api'
 import { ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -7,26 +7,30 @@ export const useAuthStore = defineStore('auth', () => {
     const token = ref(null)
 
     const login = async (email, password) => {
-        const res = await axios.post(import.meta.env.VITE_API_URL + '/login', { email, password }, { withCredentials: true })
-        token.value = res.data.access_token
-        user.value = res.data.user
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
+        const response = await api.post('/login', { email, password })
+        token.value = response.data.access_token
+        user.value = response.data.user
+        api.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
     }
+
     const fetchUser = async () => {
-        const res = await axios.get(import.meta.env.VITE_API_URL + '/me', { withCredentials: true })
-        user.value = res.data
+        const response = await api.get('/me')
+        user.value = response.data
     }
+
     const logout = async () => {
-        await axios.post(import.meta.env.VITE_API_URL + '/logout', {}, { withCredentials: true })
+        await api.post('/logout', {})
         user.value = null
         token.value = null
-        delete axios.defaults.headers.common['Authorization']
     }
 
     return {
         //state
-        user
+        user,
 
         //actions
+        login,
+        fetchUser,
+        logout,
     }
 })
