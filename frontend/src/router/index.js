@@ -1,37 +1,60 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../components/login/Login.vue'
-import { useAuthStore } from '../stores/auth'
-import Dashboard from '../pages/Dashboard.vue'
+
+import AdminLayout from '../admin/components/AdminLayout.vue'
+import AdminDashboard from '../admin/views/AdminDashboard.vue'
+import CustomerLayout from '../client/components/CustomerLayout.vue'
+import LandingPage from '@/views/LandingPage.vue'
+import Login from '@/views/Login.vue'
+
+
 
 const routes = [
-    {
-        path: '/dashboard',
-        name: 'dashboard',
-        component: Dashboard,
-        meta: {
-            requiresAuth: true
-        }
-    },
-    {
-        path: '/login',
-        name: 'login',
-        component: Login
-    },
-    {
-        path: '/register',
-        name: 'register',
-    }
+  // Rotas públicas
+  {
+    path: '/',
+    name: 'landing',
+    component: LandingPage
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+
+  {
+    path: '/admin',
+    component: AdminLayout,
+    children: [
+      {
+        path: '',
+        name: 'admin.dashboard',
+        component: AdminDashboard
+      },
+      // { path: 'users', name: 'admin.users', component: AdminUsers },
+      // { path: 'settings', name: 'admin.settings', component: AdminSettings },
+    ]
+  },
+
+  {
+    path: '/client',
+    component: CustomerLayout,
+    children: [
+    //   { path: '', name: 'client.dashboard', component: ClientDashboard },
+    //   { path: 'profile', name: 'client.profile', component: ClientProfile },
+    //   { path: 'orders', name: 'client.orders', component: ClientOrders },
+    ]
+  },
+
+  // {
+  //   path: '/:pathMatch(.*)*',
+  //   name: 'not-found',
+  //   component: NotFound
+  // }
 ]
 
 const router = createRouter({
-    history: createWebHistory(),
-    routes
-})
-
-router.beforeEach((to, from, next) => {
-    const auth = useAuthStore()
-    if (to.meta.requiresAuth && !auth.user) next('/login')
-    else next()
+  history: createWebHistory(),
+  routes
 })
 
 export default router

@@ -1,9 +1,5 @@
-<script setup>
-
-</script>
-
 <template>
-  <div id="app">
-    <router-view></router-view>
-  </div>
+    <div class="flex flex-col min-h-screen bg-gray-100">
+        <router-view />
+    </div>
 </template>

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\CmsSettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,3 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
 // Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 //     Route::get('/users', [UserController::class, 'index']);
 // });
+Route::prefix('cms')->group(function () {
+    Route::get('/banner', action: [CmsSettingController::class, 'banner']);
+    // Protegido: só admin
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/banner', [CmsSettingController::class, 'updateBanner']);
+    });
+});

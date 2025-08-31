@@ -1,3 +1,60 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ===== Configurações globais para seu SaaS ===== */
+@layer base {
+  /* Reset básico e tipografia */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-800 antialiased min-h-screen flex items-center justify-center;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold text-gray-900;
+  }
+
+  a {
+    @apply text-green-600 hover:text-green-700 transition-colors;
+  }
+}
+
+/* ===== Componentes globais ===== */
+@layer components {
+  /* Botão principal */
+  .btn-primary {
+    @apply bg-green-600 text-white px-5 py-2 rounded-lg shadow hover:bg-green-700 transition;
+  }
+
+  /* Botão secundário */
+  .btn-secondary {
+    @apply bg-gray-200 text-gray-700 px-5 py-2 rounded-lg hover:bg-gray-300 transition;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-white rounded-xl shadow p-6 border border-gray-100;
+  }
+
+  /* Inputs */
+  .input {
+    @apply w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition;
+  }
+}
+
+/* ===== Utilitários extras ===== */
+@layer utilities {
+  /* Centralizar vertical e horizontalmente */
+  .center-screen {
+    @apply flex items-center justify-center min-h-screen;
+  }
+
+  /* Espaçamento padrão para seções */
+  .section {
+    @apply py-12 px-6 md:px-12 lg:px-20;
+  }
+}

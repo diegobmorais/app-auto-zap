@@ -17,13 +17,9 @@ export default defineConfig({
         target: 'http://localhost:9000',
         changeOrigin: true,
       },
-    },
-    watch: {
-      usePolling: true,
-      interval: 1000,
-    },
+    },   
   },
-  plugins: [
+  plugins: [   
     vue({
       template: {
         transformAssetUrls: {
