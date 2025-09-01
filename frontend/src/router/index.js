@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 
-import AdminLayout from '../admin/components/AdminLayout.vue'
-import AdminDashboard from '../admin/views/AdminDashboard.vue'
+
+import AdminDashboard from '../admin/pages/AdminDashboard.vue'
+import AdminCustomers from '../admin/pages/AdminCustomers.vue'
+import AdminOrders from '../admin/pages/AdminOrders.vue'
+import AdminPlans from '../admin/pages/AdminPlans.vue'
+import AdminSettings from '../admin/pages/AdminSettings.vue'
 import CustomerLayout from '../client/components/CustomerLayout.vue'
 import LandingPage from '@/views/LandingPage.vue'
 import Login from '@/views/Login.vue'
@@ -25,7 +29,6 @@ const routes = [
 
   {
     path: '/admin',
-    component: AdminLayout,
     meta: {
       requiresAuth: true,
       adminOnly: true
@@ -36,8 +39,26 @@ const routes = [
         name: 'admin.dashboard',
         component: AdminDashboard
       },
-      // { path: 'users', name: 'admin.users', component: AdminUsers },
-      // { path: 'settings', name: 'admin.settings', component: AdminSettings },
+      {
+        path: 'customers',
+        name: 'admin.users',
+        component: AdminCustomers
+      },
+      {
+        path: 'orders',
+        name: 'admin.orders',
+        component: AdminOrders
+      },
+      {
+        path: 'plans',
+        name: 'admin.plans',
+        component: AdminPlans
+      },
+      {
+        path: 'settings',
+        name: 'admin.settings',
+        component: AdminSettings
+      },
     ]
   },
 
