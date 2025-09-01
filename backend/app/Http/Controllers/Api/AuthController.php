@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+
 
 class AuthController extends Controller
 {
@@ -16,32 +16,36 @@ class AuthController extends Controller
             'password' => 'required'
         ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json(['message' => 'Credenciais inválidas'], 401);
         }
 
-        $user->is_admin = $user->hasRole('super-admin');
+        $request->session()->regenerate();
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $user = Auth::user();
+        $user->is_super_admin = $user->hasRole('super-admin');
+        $user->is_client = $user->hasRole('client');
 
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-            'user' => $user,
-            'is_admin' => $user->is_admin
+            'message' => 'Login realizado com sucesso',
+            'user' => $user
         ]);
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json(['message' => 'Logout realizado']);
     }
 
     public function me(Request $request)
     {
-        return response()->json($request->user());
-    }
+        $user = $request->user();
+        $user->is_super_admin = $user->hasRole('super-admin');
+        $user->is_client = $user->hasRole('client');
 
-    public function logout(Request $request)
-    {
-        $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Logout realizado']);
+        return response()->json($user);
     }
 }

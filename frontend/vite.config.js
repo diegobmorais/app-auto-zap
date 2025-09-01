@@ -9,13 +9,14 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:9000',
-        changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''),
+        target: 'http://localhost',
+        changeOrigin: true,    
+        secure: false      
       },
       '/sanctum': {
-        target: 'http://localhost:9000',
+        target: 'http://localhost',
         changeOrigin: true,
+        secure: false
       },
     },   
   },

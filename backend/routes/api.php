@@ -15,15 +15,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('web')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
-    Route::post('/logout', [AuthController::class, 'logout']);
 });
-// Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-//     Route::get('/users', [UserController::class, 'index']);
-// });
+
+
 Route::prefix('cms')->group(function () {
     Route::get('/banner', action: [CmsSettingController::class, 'banner']);
     // Protegido: só admin

@@ -1,46 +1,56 @@
 import { defineStore } from 'pinia';
-import api from '@/services/api'
 import { computed, ref } from 'vue';
+import { api, getCsrfCookie } from '@/services/api';
 
 export const useAuthStore = defineStore('auth', () => {
     const user = ref(null)
-    const token = ref(null)
+    const initialized = ref(false)
 
-    const login = async (payload) => {
-        const { email, password } = payload
+    const init = async () => {
+        if (initialized.value) return;
 
-        const response = await api.post('/login', { email, password })
-        token.value = response.data.access_token
-        user.value = response.data.user
-        api.defaults.headers.common['Authorization'] = `Bearer ${token.value}`
+        await getCsrfCookie();
+
+        try {
+            const { data } = await api.get('/api/me');
+            user.value= data;
+        } catch {
+            user.value= null;
+        } finally {
+            initialized.value = true;
+        }
     }
 
-    const userIsAdmin = computed(() => {
+    const login = async (credentials) => {
+        await getCsrfCookie();
+
+        const response = await api.post('api/login', credentials)     
+        user.value = response.data.user
+
+        return response
+    }  
+
+    const isAdmin = computed(() => {
         if (!user.value?.roles) return false
         return user.value.roles.some(role => role.name === 'super-admin')
     })
 
-    const fetchUser = async () => {
-        const response = await api.get('/me')
-        user.value = response.data
-    }
-
     const logout = async () => {
         await api.post('/logout', {})
-        user.value = null
-        token.value = null
+        user.value = null     
     }
 
     return {
         //state
         user,
+        initialized,
 
         //getters
-        userIsAdmin,
+        isAdmin,
 
         //actions
+        init,
         login,
-        fetchUser,
         logout,
     }
 })

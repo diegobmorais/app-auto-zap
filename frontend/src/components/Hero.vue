@@ -26,8 +26,13 @@
 import CmsImage from '@/components/CmsImage.vue'
 import { onMounted } from 'vue'
 import { useCmsStore } from '@/stores/admin/cms'
+import { storeToRefs } from 'pinia'
 
-const { banner, loading, fetchBanner } = useCmsStore()
+const cmsStore = useCmsStore()
 
-onMounted(fetchBanner)
+const { banner, loading } = storeToRefs(cmsStore)
+
+onMounted(() => {
+    cmsStore.fetchBanner()
+})
 </script>

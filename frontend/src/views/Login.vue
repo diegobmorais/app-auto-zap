@@ -16,8 +16,11 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const useAuth = useAuthStore()
+const router = useRouter()
+
+const auth = useAuthStore()
 const form = ref({
     email: '',
     password: ''
@@ -25,9 +28,9 @@ const form = ref({
 
 const submitForm = async () => {
     try {
-        await useAuth.login(form.value)          
-        if (useAuth.user.is_admin) {
-            console.log('aqui rota admin');
+        await auth.login(form.value)          
+        if (auth.isAdmin) {
+            console.log('admin');
             
             router.push('/admin')
         } else {
