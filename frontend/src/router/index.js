@@ -7,9 +7,15 @@ import AdminCustomers from '../admin/pages/AdminCustomers.vue'
 import AdminOrders from '../admin/pages/AdminOrders.vue'
 import AdminPlans from '../admin/pages/AdminPlans.vue'
 import AdminSettings from '../admin/pages/AdminSettings.vue'
+import Blog from '@/pages/Blog.vue'
 import CustomerLayout from '../client/components/CustomerLayout.vue'
+import Company from '@/pages/Company.vue'
+import Contact from '@/pages/Contact.vue'
+import CmsPanel from '../admin/pages/CmsPanel.vue'
 import LandingPage from '@/views/LandingPage.vue'
 import Login from '@/views/Login.vue'
+import Plans from '@/pages/Plans.vue'
+import Services from '@/pages/Services.vue'
 
 const routes = [
   // Rotas públicas
@@ -25,6 +31,39 @@ const routes = [
     meta: {
       requiresGuest: true
     }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    // component: Login,
+    meta: {
+      requiresGuest: true
+    }
+  },
+  {
+    path: '/company',
+    name: 'company',
+    component: Company
+  },
+  {
+    path: '/blog',
+    name: 'blog',
+    component: Blog
+  },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: Contact
+  },
+  {
+    path: '/plans',
+    name: 'plans',
+    component: Plans
+  },
+  {
+    path: '/services',
+    name: 'services',
+    component: Services
   },
 
   {
@@ -59,6 +98,11 @@ const routes = [
         name: 'admin.settings',
         component: AdminSettings
       },
+      {
+        path: 'csm',
+        name: 'admin.csm',
+        component: CmsPanel
+      }
     ]
   },
 
